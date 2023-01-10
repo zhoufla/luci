@@ -27,12 +27,12 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Trojan
 
-LUCI_TITLE:=SS/SSR/V2Ray/XRay/Trojan/NaiveProxy/Socks5/Tun LuCI interface
+LUCI_TITLE:=SS/SSR/V2Ray/Trojan/NaiveProxy/Socks5/Tun LuCI interface
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:= \
 	@(PACKAGE_libustream-mbedtls||PACKAGE_libustream-openssl||PACKAGE_libustream-wolfssl) \
-	+coreutils +coreutils-base64 +dns2socks +dns2tcp +dnsmasq-full +ipset +ip-full \
-	+iptables-mod-tproxy +lua +lua-neturl +libuci-lua +luci-lib-ipkg +microsocks \
+	+coreutils +coreutils-base64 +dns2socks +dns2tcp +dnsmasq-full +@PACKAGE_dnsmasq_full_ipset +ipset +kmod-ipt-nat \
+	+ip-full +iptables +iptables-mod-tproxy +lua +lua-neturl +libuci-lua +microsocks \
 	+tcping +resolveip +shadowsocksr-libev-ssr-check +uclient-fetch \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_V2ray:curl \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_V2ray:v2ray-core \
@@ -59,6 +59,8 @@ LUCI_DEPENDS:= \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:trojan
 
 define Package/$(PKG_NAME)/config
+select PACKAGE_luci-lib-ipkg if PACKAGE_$(PKG_NAME)
+
 choice
 	prompt "Shadowsocks Client Selection"
 	default PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client if aarch64
@@ -121,7 +123,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria
 	default n
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_IPT2Socks
-	bool "Include ipt2socks"
+	bool "Include IPT2Socks"
 	default n
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun
@@ -151,12 +153,12 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Client
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server
 	bool "Include ShadowsocksR Libev Server"
-	default n
+	default y if i386||x86_64||arm
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan
 	bool "Include Trojan"
 	select PACKAGE_$(PKG_NAME)_INCLUDE_IPT2Socks
-	default y if arm||mipsel
+	default n
 endef
 
 define Package/$(PKG_NAME)/conffiles
@@ -164,6 +166,6 @@ define Package/$(PKG_NAME)/conffiles
 /etc/ssrplus/
 endef
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
