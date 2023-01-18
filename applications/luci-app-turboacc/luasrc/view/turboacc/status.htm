@@ -9,7 +9,6 @@
 
 <script type="text/javascript">//<![CDATA[
 	var fastpath_state = document.getElementById('_fastpath_state');
-	var bbr_state = document.getElementById('_bbr_state');
 	var fullconenat_state = document.getElementById('_fullconenat_state');
 	var dnscaching_state = document.getElementById('_dnscaching_state');
 	XHR.poll(5, '<%=luci.dispatcher.build_url("admin", "network", "turboacc", "status")%>', null, function(x, status) {
