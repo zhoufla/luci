@@ -7,13 +7,13 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_VERSION:=20221214
+PKG_VERSION:=20220120
 PKG_RELEASE:=1
 
 LUCI_TITLE:=LuCI support for Multi Stream Daemon Lite
 LUCI_DEPENDS:=+msd_lite +luci-compat
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

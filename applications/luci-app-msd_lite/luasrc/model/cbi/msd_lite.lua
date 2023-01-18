@@ -11,9 +11,8 @@ m.description = translate("The lightweight version of Multi Stream daemon (msd) 
 m:section(SimpleSection).template  = "msd_lite/msd_lite_status"
 
 s = m:section(TypedSection, "instance")
-s.addremove = true
-s.anonymous = false
-s.addbtntitle = translate("Add instance")
+s.addremove = false
+s.anonymous = true
 
 o = s:option(Flag, "enabled", translate("Enable"))
 o.default = o.disabled
@@ -35,7 +34,7 @@ o.description = translate("For multicast receive.")
 o = s:option(Value, "threads", translate("Worker threads"))
 o.datatype = "uinteger"
 o.default = "0"
-o.description = translate("0 = auto")
+o.description = translate("0 = auto.")
 
 o = s:option(Flag, "bind_to_cpu", translate("Bind threads to CPUs"))
 o.default = o.disabled
