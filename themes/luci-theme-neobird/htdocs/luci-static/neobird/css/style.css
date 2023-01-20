@@ -42,8 +42,9 @@
     --progressbarColor: #c8c8c8;
     --progressbar: #51c291;
     --progressbartxtColor: #fff;
-    --logo: url('/luci-static/neobird/images/logo.png');
-    --mlogo: url('/luci-static/neobird/images/mlogo.png');
+    /* --logo: url('/luci-static/neobird/images/logo.png');
+    --mlogo: url('/luci-static/neobird/images/mlogo.png'); */
+    --logo_color: #c15181
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,8 +79,9 @@
     --progressbarColor: #6d6d6d;
     --progressbar: #51c291;
     --progressbartxtColor: #fefefe;
-    --logo: url('/luci-static/neobird/images/logod.png');
-    --mlogo: url('/luci-static/neobird/images/mlogod.png');
+    /* --logo: url('/luci-static/neobird/images/logod.png');
+    --mlogo: url('/luci-static/neobird/images/mlogod.png'); */
+    --logo_color: #fefefe
   }
 }
 
@@ -102,6 +104,14 @@
   url('../fonts/iconfont.woff') format('woff'),
   url('../fonts/iconfont.ttf') format('truetype'),
   url('#iconfont') format('svg');
+}
+
+@font-face{
+    font-family: 'Cocon-Regular-Font';
+    src : url('../fonts/Cocon-Regular-Font.otf') format('opentype');
+}
+div{
+    font-family: 'HYk2gj';
 }
 
 
@@ -172,7 +182,7 @@ input {
     height: 2.8rem;
     line-height: 2.8rem;
     max-width: 550px;
-    }
+    
 }
 
 select:not([multiple="multiple"]):focus,
@@ -211,7 +221,7 @@ code {
     color: #0099CC;
 }
 
-img[src*="/images/logo.png"]
+/* img[src*="/images/logo.png"]
     {
     height: 60px;
     background-image: var(--logo);
@@ -222,7 +232,7 @@ img[src*="/images/logo.png"]
     background-position-x: 10px;
     background-position-y: 10px;
     background-color: var(--mainleftbgColor);
-}
+} */
 
 abbr {
     text-decoration: underline;
@@ -254,7 +264,7 @@ header {
     background-color: var(--bgwhite);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     transition: box-shadow .2s;
-    height: 50px;
+    height: 55px;
     float: left;
     position: fixed;
     z-index: 101;
@@ -349,7 +359,7 @@ p#aliyundrive-webdav_status b {
 
 .node-services-vssr .status-bar {
 	bottom: 50px;
-    display: none;
+    /* display: none; */
 }
 
 .node-services-vssr .ssr-button {
@@ -402,6 +412,16 @@ img[src*="/luci-static/resources/icons/port_up.png"] {
     width: 0;
 }
 
+img[src*="/luci-static/resources/icons/port_down.png"] {
+    background-image: url(../images/port_down.png);
+    background-size: 32px 32px;
+    height: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+
+#wan4_i img[src*="/luci-static/resources/icons/ethernet.png"],
+#wan6_i img[src*="/luci-static/resources/icons/ethernet.png"],
 img[src*="/luci-static/resources/icons/ethernet.png"] {
     background-image: url(../images/ethernet.png);
     background-size: 32px 32px;
@@ -410,7 +430,20 @@ img[src*="/luci-static/resources/icons/ethernet.png"] {
     padding: 0 0 0 32px;
     width: 0;
 }
+#cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/ethernet.png"],
+#cbi-network-1-_ifname img[src*="/luci-static/resources/icons/ethernet.png"],
+#__status-ifc-signal img[src*="/luci-static/resources/icons/ethernet.png"],
+.ifacebadge img[src*="/luci-static/resources/icons/ethernet.png"],
+li img[src*="/luci-static/resources/icons/ethernet.png"]
+ {
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
+#wan6_i img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
 img[src*="/luci-static/resources/icons/ethernet_disabled.png"] {
     background-image: url(../images/ethernet_disabled.png);
     background-size: 32px 32px;
@@ -419,35 +452,88 @@ img[src*="/luci-static/resources/icons/ethernet_disabled.png"] {
     padding: 0 0 0 32px;
     width: 0;
 }
-#cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/ethernet.png"],
-#cbi-network-1-_ifname img[src*="/luci-static/resources/icons/ethernet.png"],
-.ifacebadge img[src*="/luci-static/resources/icons/ethernet.png"]
- {
-    background-size: 16px 16px;
-    height: 16px;
-    width: 16px;
-    padding: 0 0 0 16px;
-}
 #cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
 #cbi-network-1-_ifname img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
-.ifacebadge img[src*="/luci-static/resources/icons/ethernet_disabled.png"]
- {
+#__status-ifc-signal img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
+.ifacebadge img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
+li img[src*="/luci-static/resources/icons/ethernet_disabled.png"]
+{
     background-size: 16px 16px;
     height: 16px;
     width: 16px;
     padding: 0 0 0 16px;
 }
 
-
-img[src*="/luci-static/resources/icons/loading.gif"] {
-    background-image: url(../images/loading.gif);
-    background-size: 20px 20px;
-    height: 20px;
-    width: 20px;
-    padding: 0 0 0 20px;
+img[src*="/luci-static/resources/icons/wifi.png"] {
+    background-image: url(../images/wifi.png);
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
     width: 0;
 }
+#cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/wifi.png"],
+#cbi-network-1-_ifname img[src*="/luci-static/resources/icons/wifi.png"],
+.ifacebadge img[src*="/luci-static/resources/icons/wifi.png"],
+li img[src*="/luci-static/resources/icons/wifi.png"]
+{
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
 
+img[src*="/luci-static/resources/icons/wifi_disabled.png"] {
+    background-image: url(../images/wifi_disabled.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+#cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/wifi_disabled.png"],
+#cbi-network-1-_ifname img[src*="/luci-static/resources/icons/wifi_disabled.png"],
+.ifacebadge img[src*="/luci-static/resources/icons/wifi_disabled.png"],
+li img[src*="/luci-static/resources/icons/wifi_disabled.png"]
+{
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
+
+img[src*="/luci-static/resources/icons/vlan.png"] {
+    background-image: url(../images/vlan.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+li img[src*="/luci-static/resources/icons/vlan.png"]
+{
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
+
+img[src*="/luci-static/resources/icons/vlan_disabled.png"] {
+    background-image: url(../images/vlan_disabled.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+li img[src*="/luci-static/resources/icons/vlan_disabled.png"]
+{
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
 
 img[src*="/luci-static/resources/icons/bridge.png"] {
     background-image: url(../images/bridge.png);
@@ -455,6 +541,24 @@ img[src*="/luci-static/resources/icons/bridge.png"] {
     height: 16px;
     width: 16px;
     padding: 0 0 0 16px;
+    width: 0;
+}
+
+img[src*="/luci-static/resources/icons/tunnel.png"] {
+    background-image: url(../images/tunnel.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+
+img[src*="/luci-static/resources/icons/loading.gif"] {
+    background-image: url(../images/loading.gif);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px;
+    padding: 0 0 0 20px;
     width: 0;
 }
 
@@ -642,24 +746,25 @@ padding:0;
 }
 
 header > .container > .brand {
-    font-size: 32px;
+    font-size: 25px;
+    font-family: "Cocon-Regular-Font";
     /*font-weight:bold;*/
     line-height:60px;
     /*color: white;*/
-    color:rgb(111,42,142);
+    color: var(--logo_color);
     cursor: default;
     /*background: #51c291;*/
     display:block;
     width:17rem;
-    padding-right: 10px;
+    /* padding-left: 30px; */
     height:60px;
     text-align:center;
     float:left;
     font-weight:900;
-    letter-spacing:3px;
+    letter-spacing:2px;
 }
 header > .container > a[class="brand"]:after {
-    content:"鎼达拷";
+    content:"";
     font-size:14px;
     font-family:Tahoma;
     position: absolute;
@@ -697,7 +802,7 @@ header > .container > .brand-hostname {
     min-width: inherit;
     overflow: auto;
     border-radius: 10px;
-    background-color: #FFF;
+   background-color: rgba(0,0,0,.05);
 }
 
 .errorbox {
@@ -1192,15 +1297,6 @@ div#container\.nlbw\.traffic {
 
 td#__status-ifc-signal {
     width: 60px !important;
-}
-
-td#__status-ifc-signal img[src*="/luci-static/resources/icons/bridge.png"] {
-    background-image: url(../images/bridge.png);
-    background-size: 32px 32px;
-    height: 32px !important;
-    width: 32px !important;
-    padding: 0 0 0 32px;
-    width: 0;
 }
 
 /* button style */
@@ -1814,12 +1910,12 @@ header > .container > .pull-right > * {
 }
 
 #xhr_poll_status > .label.success {
-    padding: 3px 10px;
+    padding: 10px 10px;
     border-radius: 20px;
 }
 
 #xhr_poll_status_off {
-    padding: 3px 10px;
+    padding: 10px 10px;
     border-radius: 20px;
 }
 
@@ -1933,13 +2029,13 @@ header > .container > .pull-right > * {
     justify-content: center;
 }
 
-.node-main-login > .main .container {
+/* .node-main-login > .main .container {
     background-image: var(--logo);
     background-repeat: no-repeat;
     background-size: 300px auto;
     width: 300px;
     padding: 80px 0 0 0;
-}
+} */
 
 .node-main-login > .main form > div:nth-last-child(1) {
 }
@@ -2049,10 +2145,10 @@ header > .container > .pull-right > * {
 }
 
 .node-system-packages > .main .cbi-value > pre {
-    background-color: var(--inputbgColor);
+    /* background-color: var(--inputbgColor); */
     padding: 10px;
     overflow: auto;
-    border: var(--inputBorder);
+    /* border: var(--inputBorder); */
     border-radius: 10px;
 }
 
@@ -2101,14 +2197,13 @@ header > .container > .pull-right > * {
 #container\.nlbw\.ipv6 th,
 #container\.nlbw\.ipv6 td, 
 #container\.nlbw\.export th, 
-#container\.nlbw\.export td, 
- {
+#container\.nlbw\.export td {
     padding: 3px;
     border-top: none;
     border-left: #ccc 1px solid;
     border-right: #ccc 1px solid;
     border-bottom: #ccc 1px solid;
-}
+ }
 
 .cbi-tabmenu + .cbi-section ul {
     text-align: left;
@@ -2279,7 +2374,7 @@ body.lang_pl.node-main-login .cbi-value-title {
 
 @media screen and (max-width: 992px) {
 
-    img[src*="/images/logo.png"] {
+    /* img[src*="/images/logo.png"] {
     background-color: var(--mainleftbgColor);
     height: 50px;
     background-image: var(--mlogo);
@@ -2289,7 +2384,7 @@ body.lang_pl.node-main-login .cbi-value-title {
     width: 0;
     margin: 0;
     background-position: 0;
-    }
+    } */
 
     .main-left {
         width: 0;
@@ -2308,12 +2403,16 @@ body.lang_pl.node-main-login .cbi-value-title {
         position: absolute;
         width: 300px;
         height: 50px;
+        padding: 17px 27px;
     }
 
     .showSide:before {
         content: "\e20e";
         font-size: 1.7rem;
-        display: none;
+    }
+
+    #maincontent > .container {
+        margin: 20px 20px;
     }
 
     .node-main-login .showSide {
@@ -2369,7 +2468,7 @@ body.lang_pl.node-main-login .cbi-value-title {
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 370px) {
 
     fieldset {
     /* overflow-x: auto; */
@@ -2385,14 +2484,14 @@ body.lang_pl.node-main-login .cbi-value-title {
     }
 
     header {
-        height: 45px;
+        height: 55px;
     }
 
     h3 {
         padding: 0 10px 10px 10px;
     }
 
-    img[src*="/images/logo.png"]
+    /* img[src*="/images/logo.png"]
     {    
     height: 45px;
     background-image: var(--mlogo);
@@ -2402,7 +2501,7 @@ body.lang_pl.node-main-login .cbi-value-title {
     width: 0;
     margin: 0;
     background-position: 0;
-    }
+    } */
 
     .showSide {
         height: 45px;
@@ -2549,14 +2648,11 @@ body.lang_pl.node-main-login .cbi-value-title {
         margin: 0;
     }
 
-    #cbi-samba-cfg010f89-_tmpl .cbi-value-title,
-     {
+    #cbi-samba-cfg010f89-_tmpl .cbi-value-title{
         width: 15%;
 
     }
-     #cbi-samba-cfg010f89-_tmpl .cbi-value-field,
-
-      {
+     #cbi-samba-cfg010f89-_tmpl .cbi-value-field{
         width: 95%;        
     }
 }
@@ -2587,4 +2683,13 @@ body.lang_pl.node-main-login .cbi-value-title {
     #cbi-vssr-servers .cbi-page-actions {
         padding-bottom: 10px !important;
     }
+
+    #maincontent > .container {
+        margin: 20px 20px;
+    }
+}
+
+/* fix http://192.168.2.1/cgi-bin/luci/admin/nlbw/usage */
+#intervalSelect {
+    height: 40px !important;
 }
