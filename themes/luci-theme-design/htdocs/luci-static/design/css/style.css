@@ -1,5 +1,5 @@
 /**
- *  Neobird is a clean HTML5 theme for LuCI. It is based on luci-theme-material
+ *  Design is a clean HTML5 theme for LuCI. It is based on luci-theme-material and luci-theme-neobird
  *
  *  luci-theme-material
  *      Copyright 2015 Lutty Yang <lutty@wcan.in>
@@ -42,9 +42,11 @@
     --progressbarColor: #c8c8c8;
     --progressbar: #51c291;
     --progressbartxtColor: #fff;
-    /* --logo: url('/luci-static/neobird/images/logo.png');
-    --mlogo: url('/luci-static/neobird/images/mlogo.png'); */
-    --logo_color: #c15181
+    /* --logo: url('/luci-static/design/images/logo.png');
+    --mlogo: url('/luci-static/design/images/mlogo.png'); */
+    --logo_color: #c15181;
+    --alertColor: #000000;
+    --alertBackground: rgb(230 230 230);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -79,9 +81,11 @@
     --progressbarColor: #6d6d6d;
     --progressbar: #51c291;
     --progressbartxtColor: #fefefe;
-    /* --logo: url('/luci-static/neobird/images/logod.png');
-    --mlogo: url('/luci-static/neobird/images/mlogod.png'); */
-    --logo_color: #fefefe
+    /* --logo: url('/luci-static/design/images/logod.png');
+    --mlogo: url('/luci-static/design/images/mlogod.png'); */
+    --logo_color: #fefefe;
+    --alertColor: #ffffff;
+    --alertBackground: rgb(30 30 30);
   }
 }
 
@@ -97,7 +101,7 @@
 }
 
 @font-face {
-  font-family: 'neobird';
+  font-family: 'design';
   src: url('');
   src: url('?#iefix') format('embedded-opentype'),
   url('../fonts/iconfont.woff2') format('woff2'),
@@ -432,7 +436,6 @@ img[src*="/luci-static/resources/icons/ethernet.png"] {
 }
 #cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/ethernet.png"],
 #cbi-network-1-_ifname img[src*="/luci-static/resources/icons/ethernet.png"],
-#__status-ifc-signal img[src*="/luci-static/resources/icons/ethernet.png"],
 .ifacebadge img[src*="/luci-static/resources/icons/ethernet.png"],
 li img[src*="/luci-static/resources/icons/ethernet.png"]
  {
@@ -440,6 +443,14 @@ li img[src*="/luci-static/resources/icons/ethernet.png"]
     height: 16px;
     width: 16px;
     padding: 0 0 0 16px;
+}
+#__status-ifc-signal img[src*="/luci-static/resources/icons/ethernet.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
 }
 
 #wan4_i img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
@@ -454,7 +465,6 @@ img[src*="/luci-static/resources/icons/ethernet_disabled.png"] {
 }
 #cbi-network-lan-ifname_multi img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
 #cbi-network-1-_ifname img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
-#__status-ifc-signal img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
 .ifacebadge img[src*="/luci-static/resources/icons/ethernet_disabled.png"],
 li img[src*="/luci-static/resources/icons/ethernet_disabled.png"]
 {
@@ -463,10 +473,19 @@ li img[src*="/luci-static/resources/icons/ethernet_disabled.png"]
     width: 16px;
     padding: 0 0 0 16px;
 }
+#__status-ifc-signal img[src*="/luci-static/resources/icons/ethernet_disabled.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/wifi.png"],
+#wan6_i img[src*="/luci-static/resources/icons/wifi.png"],
 img[src*="/luci-static/resources/icons/wifi.png"] {
     background-image: url(../images/wifi.png);
-    background-repeat: no-repeat;
     background-size: 32px 32px;
     height: 32px;
     width: 32px;
@@ -483,7 +502,17 @@ li img[src*="/luci-static/resources/icons/wifi.png"]
     width: 16px;
     padding: 0 0 0 16px;
 }
+#__status-ifc-signal img[src*="/luci-static/resources/icons/wifi.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/wifi_disabled.png"],
+#wan6_i img[src*="/luci-static/resources/icons/wifi_disabled.png"],
 img[src*="/luci-static/resources/icons/wifi_disabled.png"] {
     background-image: url(../images/wifi_disabled.png);
     background-size: 32px 32px;
@@ -502,7 +531,17 @@ li img[src*="/luci-static/resources/icons/wifi_disabled.png"]
     width: 16px;
     padding: 0 0 0 16px;
 }
+#__status-ifc-signal img[src*="/luci-static/resources/icons/wifi_disabled.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/vlan.png"],
+#wan6_i img[src*="/luci-static/resources/icons/vlan.png"],
 img[src*="/luci-static/resources/icons/vlan.png"] {
     background-image: url(../images/vlan.png);
     background-size: 32px 32px;
@@ -511,6 +550,7 @@ img[src*="/luci-static/resources/icons/vlan.png"] {
     padding: 0 0 0 32px;
     width: 0;
 }
+.ifacebadge img[src*="/luci-static/resources/icons/vlan.png"],
 li img[src*="/luci-static/resources/icons/vlan.png"]
 {
     background-size: 16px 16px;
@@ -518,7 +558,17 @@ li img[src*="/luci-static/resources/icons/vlan.png"]
     width: 16px;
     padding: 0 0 0 16px;
 }
+#__status-ifc-signal img[src*="/luci-static/resources/icons/vlan.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/vlan_disabled.png"],
+#wan6_i img[src*="/luci-static/resources/icons/vlan_disabled.png"],
 img[src*="/luci-static/resources/icons/vlan_disabled.png"] {
     background-image: url(../images/vlan_disabled.png);
     background-size: 32px 32px;
@@ -527,6 +577,7 @@ img[src*="/luci-static/resources/icons/vlan_disabled.png"] {
     padding: 0 0 0 32px;
     width: 0;
 }
+.ifacebadge img[src*="/luci-static/resources/icons/vlan_disabled.png"],
 li img[src*="/luci-static/resources/icons/vlan_disabled.png"]
 {
     background-size: 16px 16px;
@@ -534,8 +585,27 @@ li img[src*="/luci-static/resources/icons/vlan_disabled.png"]
     width: 16px;
     padding: 0 0 0 16px;
 }
+#__status-ifc-signal img[src*="/luci-static/resources/icons/vlan_disabled.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/bridge.png"],
+#wan6_i img[src*="/luci-static/resources/icons/bridge.png"],
 img[src*="/luci-static/resources/icons/bridge.png"] {
+    background-image: url(../images/bridge.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+.ifacebadge img[src*="/luci-static/resources/icons/bridge.png"],
+li img[src*="/luci-static/resources/icons/bridge.png"] {
     background-image: url(../images/bridge.png);
     background-size: 16px 16px;
     height: 16px;
@@ -543,13 +613,102 @@ img[src*="/luci-static/resources/icons/bridge.png"] {
     padding: 0 0 0 16px;
     width: 0;
 }
+#__status-ifc-signal img[src*="/luci-static/resources/icons/bridge.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
 
+#wan4_i img[src*="/luci-static/resources/icons/bridge_disabled.png"],
+#wan6_i img[src*="/luci-static/resources/icons/bridge_disabled.png"],
+img[src*="/luci-static/resources/icons/bridge_disabled.png"] {
+    background-image: url(../images/bridge_disabled.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+.ifacebadge img[src*="/luci-static/resources/icons/bridge_disabled.png"],
+li img[src*="/luci-static/resources/icons/bridge_disabled.png"] {
+    background-image: url(../images/bridge_disabled.png);
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+    width: 0;
+}
+#__status-ifc-signal img[src*="/luci-static/resources/icons/bridge_disabled.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
+
+#wan4_i img[src*="/luci-static/resources/icons/tunnel.png"],
+#wan6_i img[src*="/luci-static/resources/icons/tunnel.png"],
 img[src*="/luci-static/resources/icons/tunnel.png"] {
     background-image: url(../images/tunnel.png);
     background-size: 32px 32px;
     height: 32px;
     width: 32px;
     padding: 0 0 0 32px;
+    width: 0;
+}
+.ifacebadge img[src*="/luci-static/resources/icons/tunnel.png"],
+li img[src*="/luci-static/resources/icons/tunnel.png"]
+{
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
+#__status-ifc-signal img[src*="/luci-static/resources/icons/tunnel.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
+
+#wan4_i img[src*="/luci-static/resources/icons/tunnel_disabled.png"],
+#wan6_i img[src*="/luci-static/resources/icons/tunnel_disabled.png"],
+img[src*="/luci-static/resources/icons/tunnel_disabled.png"] {
+    background-image: url(../images/tunnel_disabled.png);
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0 0 0 32px;
+    width: 0;
+}
+.ifacebadge img[src*="/luci-static/resources/icons/tunnel_disabled.png"],
+li img[src*="/luci-static/resources/icons/tunnel_disabled.png"]
+{
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px;
+    padding: 0 0 0 16px;
+}
+#__status-ifc-signal img[src*="/luci-static/resources/icons/tunnel_disabled.png"]
+{
+    background-size: 32px 32px!important;
+    height: 32px !important;
+    width: 32px!important;
+    padding: 0 0 0 32px!important;
+    width: 0;
+}
+
+img[src*="/luci-static/resources/icons/wifi_big.png"] {
+    background-image: url(../images/wifi_big.png);
+    background-size: 64px 64px;
+    height: 64px;
+    padding: 0 0 0 64px;
     width: 0;
 }
 
@@ -604,7 +763,7 @@ img[src*="/luci-static/resources/cbi/reload.gif"] {
 
 
 .myIcon{
-    font-family: "neobird" !important;
+    font-family: "design" !important;
     font-style: normal !important;
     font-variant: normal !important;
     text-transform: none !important;
@@ -802,7 +961,8 @@ header > .container > .brand-hostname {
     min-width: inherit;
     overflow: auto;
     border-radius: 10px;
-   background-color: rgba(0,0,0,.05);
+    color: var(--alertColor);
+    background-color: var(--alertBackground);
 }
 
 .errorbox {
@@ -889,7 +1049,7 @@ p#shadowsocksr_status {
     left:-10px;
     top: 1px;
     position: relative;
-    font-family: "neobird" !important;
+    font-family: "design" !important;
     font-weight: bold !important;
     text-transform: none !important;
     speak: none;
@@ -1007,7 +1167,7 @@ p#shadowsocksr_status {
     padding: 8px 0px 8px 25px;
 }
 .main > .main-left > .nav > .slide > .slide-menu > li > a:after{
-    font-family: "neobird" !important;
+    font-family: "design" !important;
     font-style: normal !important;
     font-variant: normal !important;
     content: "\eb03";
@@ -1248,7 +1408,7 @@ fieldset > table > tbody > tr:nth-of-type(odd) {
 
 /* fix node-network-network */
 
-#cbi-network-lan-__status table {
+/* #cbi-network-lan-__status table {
     width: auto;
 }
 
@@ -1260,8 +1420,33 @@ fieldset > table > tbody > tr:nth-of-type(odd) {
 #cbi-network-lan-__status table td small {
     font-size: 11px;
     white-space: nowrap;
+} */
+
+div [id*="cbi-network-"] [id*="-__status"] table {
+    width: auto;
 }
 
+div [id*="cbi-network-"] [id*="-__status"] table td {
+    width: 0;
+    padding: 0;
+
+}
+div [id*="cbi-network-"] [id*="-__status"] table td small {
+    width: auto;
+}
+
+div [id*="cbi-wireless"] [id*="-__status"] table {
+    width: auto;
+}
+
+div [id*="cbi-wireless"] [id*="-__status"] table td {
+    width: 0;
+    padding: 0;
+
+}
+div [id*="cbi-wireless"] [id*="-__status"] table td small {
+    width: auto;
+}
 
 /* fix node-status-routes */
 
@@ -1940,7 +2125,7 @@ header > .container > .pull-right > * {
 
 #refresh_on, #refresh_off {
     font-size: 1.5rem;
-    font-family: neobird;
+    font-family: design;
 }
 
 #refresh_on {
