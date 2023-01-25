@@ -9,13 +9,12 @@
  *
  *  Licensed to the public under the Apache License 2.0
  */
-
-:root {
+ [data-theme='light'] {
     --bg: #f1f4f5;
     --mainbg: #fff;
     --bgwhite: #fff;
-    --activeColor: #51c291;
-    --activeBottom: #51c291 2px solid;
+    --activeColor: #5ea69b;
+    --activeBottom: #5ea69b 2px solid;
     --textColor: rgb(132,119,116);
     --borderColor: rgba(0,0,0,.15);
     --navbgColor: rgba(255, 255, 255, .7);
@@ -40,22 +39,24 @@
     --badgebgColor: #f7f7f7;
     --badgeBorder: #e4eaec 1px solid;
     --progressbarColor: #c8c8c8;
-    --progressbar: #51c291;
+    --progressbar: #5ea69b;
     --progressbartxtColor: #fff;
     /* --logo: url('/luci-static/design/images/logo.png');
     --mlogo: url('/luci-static/design/images/mlogo.png'); */
-    --logo_color: #c15181;
+    --logo_color: #222b36;
     --alertColor: #000000;
     --alertBackground: rgb(230 230 230);
+    --scrollbarColor:#d0d0d0;
+    --ifaceboxBorderColor: #b8b8b8bd;
+    --ifaceboxFontColor: #1a1a1a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+[data-theme='dark'] {
     --bg: #000;
     --bgwhite: #000;
     --textColor: #fefefe;
-    --activeColor: #51c291;
-    --activeBottom: #51c291 2px solid;
+    --activeColor: #5ea69b;
+    --activeBottom: #5ea69b 2px solid;
     --borderColor: #2C2C3A;
     --navbgColor: hsla(0, 0%, 7%, .8);
     --navBorder: 1px solid #1c1c1e;
@@ -79,14 +80,16 @@
     --badgebgColor: #fefefe;
     --badgeBorder: #3d3d40 1px solid;
     --progressbarColor: #6d6d6d;
-    --progressbar: #51c291;
+    --progressbar: #5ea69b;
     --progressbartxtColor: #fefefe;
     /* --logo: url('/luci-static/design/images/logod.png');
     --mlogo: url('/luci-static/design/images/mlogod.png'); */
     --logo_color: #fefefe;
     --alertColor: #ffffff;
     --alertBackground: rgb(30 30 30);
-  }
+    --scrollbarColor:#222;
+    --ifaceboxBorderColor: #636363bd;
+    --ifaceboxFontColor: #1a1a1a;
 }
 
 @font-face {
@@ -104,9 +107,9 @@
   font-family: 'design';
   src: url('');
   src: url('?#iefix') format('embedded-opentype'),
-  url('../fonts/iconfont.woff2') format('woff2'),
-  url('../fonts/iconfont.woff') format('woff'),
-  url('../fonts/iconfont.ttf') format('truetype'),
+  url('../fonts/iconfont-Regular.woff2') format('woff2'),
+  url('../fonts/iconfont-Regular.woff') format('woff'),
+  url('../fonts/iconfont-Regular.ttf') format('truetype'),
   url('#iconfont') format('svg');
 }
 
@@ -114,10 +117,18 @@
     font-family: 'Cocon-Regular-Font';
     src : url('../fonts/Cocon-Regular-Font.otf') format('opentype');
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbarColor) ;
+    border-radius: 2px;
+}
+
 div{
     font-family: 'HYk2gj';
 }
-
 
 html {
     -webkit-text-size-adjust: 100%;
@@ -266,8 +277,8 @@ header, .main {
 
 header {
     background-color: var(--bgwhite);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    transition: box-shadow .2s;
+    box-shadow: 17rem 2px 4px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s;
     height: 55px;
     float: left;
     position: fixed;
@@ -311,9 +322,14 @@ text, line {
     -moz-osx-font-smoothing: grayscale;
 }
 
-input.cbi-button.cbi-button-add {
-    /* margin-left: 10px; */
+/* fix luci-app-passwall2 button style */
+.node-services-passwall2 #cbi-passwall2 {
+    text-align: center;
 }
+.node-services-passwall2 input.cbi-button.cbi-button {
+    max-width: unset;
+}
+
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-family: -apple-system, 'Microsoft Yahei';
@@ -324,16 +340,20 @@ input.cbi-button.cbi-button-add {
     text-transform: capitalize;
 }
 
+label.zonebadge.zonebadge-empty {
+    background-color: #03abe8 !important;
+}
+
 label.zonebadge{
     border-radius: 5px;
     padding: 2px 5px 2px 5px !important;
-    background-color: #5bdeae !important;
+    /* background-color: #5bdeae !important; */
     display: inline-block;
     cursor: pointer;
     color: #fefefe;
 }
 .zonebadge {
-    background-color: var(--tabmenubgColor) !important;
+    /* background-color: var(--tabmenubgColor) !important; */
     border-radius: 6px;
     padding: 5px;
 }
@@ -348,22 +368,26 @@ svg {
 
 /* fix p#aliyundrive-webdav_status b */
 
-p#aliyundrive-webdav_status b {
+/* p#aliyundrive-webdav_status b {
     color: #ff6666 !important;
     text-transform:capitalize;
-}
+} */
 
 /* fix .cbi-section .cbi-section */
-
 .cbi-section .cbi-section {
     margin: 10px;
 }
 
 /* fix node-services-vssr */
-
 .node-services-vssr .status-bar {
-	bottom: 50px;
+    bottom:calc(50px + constant(safe-area-inset-bottom));
+    bottom:calc(50px + env(safe-area-inset-bottom));
     /* display: none; */
+    background-color: var(--navbgColor);
+}
+.node-services-vssr .container {
+    padding-bottom:calc(50px + constant(safe-area-inset-bottom));
+    padding-bottom:calc(50px + env(safe-area-inset-bottom));
 }
 
 .node-services-vssr .ssr-button {
@@ -712,6 +736,14 @@ img[src*="/luci-static/resources/icons/wifi_big.png"] {
     width: 0;
 }
 
+img[src*="/luci-static/resources/icons/wifi_big_disabled.png"] {
+    background-image: url(../images/wifi_big_disabled.png);
+    background-size: 64px 64px;
+    height: 64px;
+    padding: 0 0 0 64px;
+    width: 0;
+}
+
 img[src*="/luci-static/resources/icons/loading.gif"] {
     background-image: url(../images/loading.gif);
     background-size: 20px 20px;
@@ -722,14 +754,14 @@ img[src*="/luci-static/resources/icons/loading.gif"] {
 }
 
 .ifacebox-body img {
-    background-size: 22px 22px;
-    padding: 0 0 0 22px;
-    width:22px !important;
-    height:22px !important;
-    padding: 0 0 0 22px !important;
+    background-size: 20px 20px;
+    padding: 0 0 0 20px;
+    width:20px !important;
+    height:20px !important;
+    padding: 0 0 0 20px !important;
 }
 .ifacebox-head {
-    background-color: #1096db !important;
+    /* background-color: #337ab7 !important; */
     border-radius: 4px 4px 0 0;
 }
 
@@ -758,6 +790,72 @@ img[src*="/luci-static/resources/cbi/reload.gif"] {
     height: 20px;
     padding: 0 0 0 20px;
     width: 0;
+    z-index: 2;
+}
+
+img[src*="/luci-static/resources/icons/signal-75-100.png"]
+{
+    background-image: url(../images/signal-75-100.png);
+    image-rendering: pixelated;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0 0 0 24px;
+    z-index: 2;
+}
+
+img[src*="/luci-static/resources/icons/signal-50-75.png"]
+{
+    background-image: url(../images/signal-50-75.png);
+    image-rendering: pixelated;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0 0 0 24px;
+    z-index: 2;
+}
+
+img[src*="/luci-static/resources/icons/signal-25-50.png"]
+{
+    background-image: url(../images/signal-25-50.png);
+    image-rendering: pixelated;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0 0 0 24px;
+    z-index: 2;
+}
+
+img[src*="/luci-static/resources/icons/signal-0-25.png"]
+{
+    background-image: url(../images/signal-0-25.png);
+    image-rendering: pixelated;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0 0 0 24px;
+    z-index: 2;
+}
+
+img[src*="/luci-static/resources/icons/signal-0.png"]
+{
+    background-image: url(../images/signal-0.png);
+    image-rendering: pixelated;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0 0 0 24px;
+    z-index: 2;
+}
+
+img[src*="/luci-static/resources/icons/signal-none.png"]
+{
+    background-image: url(../images/signal-none.png);
+    image-rendering: pixelated;
+    background-size: 24px 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0 0 0 24px;
     z-index: 2;
 }
 
@@ -874,6 +972,8 @@ img[src*="/luci-static/resources/cbi/reload.gif"] {
     height: calc(100% - 3.5rem);
     position: fixed;
     padding-top: 15px;
+    box-shadow: 0 0px 4px rgb(0 0 0 / 8%);
+    transition: visibility 150ms, width 150ms;
 }
 
 .main-right {
@@ -920,7 +1020,7 @@ header > .container > .brand {
     text-align:center;
     float:left;
     font-weight:900;
-    letter-spacing:2px;
+    letter-spacing:1px;
 }
 header > .container > a[class="brand"]:after {
     content:"";
@@ -1022,6 +1122,7 @@ p#shadowsocksr_status {
     cursor: pointer;
     font-weight: bold;
     font-size: 1.1rem;
+    transition: all 0.2s;
 }
 
 /*
@@ -1057,6 +1158,27 @@ p#shadowsocksr_status {
     -webkit-font-smoothing: antialiased;
 }
 
+.main > .main-left > .nav > .slide > .menu::after {
+    right: 0.5rem;
+    top: 0.8rem;
+    font-family: "design" !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    content: "\eb03";
+    float: right;
+    padding-right: 5px;
+    line-height: 1.6;
+    /* Better Font Rendering =========== */
+    -moz-osx-font-smoothing: grayscale;
+    transition: all 0.15s ease;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    transition: all 0.3s;
+}
+
+.main .main-left .nav li.slide .menu.active::after {
+  transform: rotate(90deg);
+}
 
 .main > .main-left > .nav > .slide > a[data-title="Status"]:before {
     content: "\e6b8";
@@ -1071,7 +1193,7 @@ p#shadowsocksr_status {
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Docker"]:before {
-    content: "\e676";
+    content: "\44";
 }
 
 .main > .main-left > .nav > .slide > a[data-title="NAS"]:before {
@@ -1079,17 +1201,16 @@ p#shadowsocksr_status {
 }
 
 .main > .main-left > .nav > .slide > a[data-title="VPN"]:before {
-    content: "\e6fa";
+    content: "\56";
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Network"]:before {
-    content: "\e8f8";
+    content: "\72";
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Bandwidth Monitor"]:before {
     content: "\e764";
 }
-
 .main .main-left .nav li.slide .menu[data-title="Statistics"]:before {
   content: "\e604";
 }
@@ -1102,9 +1223,23 @@ p#shadowsocksr_status {
   content: "\e7dd";
 }
 
-.main > .main-left > .nav > li > a[data-title="Logout"] {
-    padding: 10px 0px 10px 25px
+.main > .main-left > .nav > li > a[data-title="Inital Setup"]:before {
+    content: "\e67e";
 }
+
+.main > .main-left > .nav > li > a[href="/cgi-bin/luci//admin/wizard"]:before {
+    content: "\e67e";
+}
+
+.main > .main-left > .nav > li > a[data-title="iStore"]:before {
+    content: "\e676";
+}
+
+
+.main > .main-left > .nav > li > a[data-title="Logout"] {
+    padding: 0.675rem 0 0.675rem 2.5rem;
+}
+
 .main > .main-left > .nav > li > a[data-title="Logout"]:before {
     content: "\e641";
 }
@@ -1123,11 +1258,17 @@ p#shadowsocksr_status {
 
 .main > .main-left > .nav > .slide > .menu {
     display: block;
-    padding: 10px 25px;
+    padding: 0.675rem 0 0.675rem 2.5rem;
     text-decoration: none;
     cursor: pointer;;
 }
 
+.main > .main-left > .nav > .slide > .menu2 {
+    display: block;
+    padding: 0.675rem 0 0.675rem 2.5rem;
+    text-decoration: none;
+    cursor: pointer;;
+}
 .main > .main-left > .nav > li:hover,
 .main > .main-left > .nav > .slide > .menu:hover {
     background: var(--activeColor);
@@ -1164,16 +1305,12 @@ p#shadowsocksr_status {
     border: none !important;
     text-transform: capitalize;
     font-size: 1rem;
-    padding: 8px 0px 8px 25px;
+    margin: 0.1rem 0.5rem 0.1rem 0.5rem;
+    padding: 0.675rem 0 0.675rem 2.5rem;
 }
-.main > .main-left > .nav > .slide > .slide-menu > li > a:after{
-    font-family: "design" !important;
-    font-style: normal !important;
-    font-variant: normal !important;
-    content: "\eb03";
-    float: right;
-    padding-right: 5px;
-}
+.main .main-left .nav li.slide .slide-menu .active a {
+    color: #000;
+  }
 
 .main > .main-left > .nav > .slide > .slide-menu > li > a:hover {
     color:white;
@@ -1186,6 +1323,7 @@ p#shadowsocksr_status {
 .main > .main-left > .nav > .slide > .slide-menu > li:hover {
     background: var(--activeColor);
     color:white !important;
+    transition: all 0.2s;
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > .active:hover {
@@ -1281,6 +1419,7 @@ table tr th:empty {
 }
 strong {
     font-weight: bold;
+    padding: 2px;
 }
 
 #lb_load01_cur,
@@ -1342,6 +1481,7 @@ fieldset > table > tbody > tr:nth-of-type(odd) {
     width: 100% !important;
     border-color: var(--progressbarColor) !important;
     background-color:var(--progressbarColor) !important;
+    border-radius: 3px;
 }
 
 #swaptotal > div > div,
@@ -1354,6 +1494,7 @@ fieldset > table > tbody > tr:nth-of-type(odd) {
 #memtotal > div > div {
     background-color: var(--progressbar) !important;
     color: var(--progressbartxtColor) !important;
+    border-radius: 3px;
 }
 
 #swaptotal div div,
@@ -1449,15 +1590,13 @@ div [id*="cbi-wireless"] [id*="-__status"] table td small {
 }
 
 /* fix node-status-routes */
-
 .node-status-routes .cbi-section-node{
     max-height: 500px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 /* fix multiple table */
-
 table table {
     border: none;
 }
@@ -1477,6 +1616,10 @@ td > table > tbody > tr > td {
 }
 
 div#container\.nlbw\.traffic {
+    /* overflow: auto; */
+}
+div#container\.nlbw\.traffic #host-data {
+    display: block;
     overflow: auto;
 }
 
@@ -1508,6 +1651,7 @@ td#__status-ifc-signal {
     min-width: 80px;
     padding: 0px 8px 0px 8px;
     max-width: 160px;
+    border-radius: 8px;
     height: 35px;
     line-height: 35px;
 }
@@ -1563,8 +1707,8 @@ form.inline + form.inline,
 .cbi-input-reload,
 .cbi-button-reload {
     color: var(--bttextColor);
-    background-color: rgb(0,171,232) !important;
-    border-color: rgb(0,171,232) !important;
+    background-color: #337ab7 !important;
+    border-color: #337ab7 !important;
 }
 
 .cbi-button-link:hover,
@@ -1576,9 +1720,10 @@ form.inline + form.inline,
 .cbi-input-reload:hover,
 .cbi-button-reload:hover{
     color: #fff !important;
-    background-color: #337ab7 !important;
-    border-color: #337ab7 !important;
+    background-color: #6A82AE!important;
+    border-color: #6A82AE !important;
 }
+
 
 .cbi-input-apply,
 .cbi-button-apply,
@@ -1599,7 +1744,6 @@ form.inline + form.inline,
 }
 
 /* table */
-
 .tabs {
     margin: 15px 0;
     overflow-x: auto;
@@ -1916,6 +2060,16 @@ width:50px !important;
     font-family: monospace;
 }
 
+.uci-change-list *:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+  
+.uci-change-list *:nth-last-child(2) {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
 .uci-change-list ins,
 .uci-change-legend-label ins {
     text-decoration: none;
@@ -1923,8 +2077,14 @@ width:50px !important;
     background-color: #CCFFCC;
     display: block;
     padding: 2px;
+    color: black;
+    overflow-x: auto;
 }
-
+.uci-change-legend .uci-change-legend-label ins {
+    overflow-x: unset;
+    border-radius: 5px;
+}
+    
 .uci-change-list del,
 .uci-change-legend-label del {
     text-decoration: none;
@@ -1933,6 +2093,12 @@ width:50px !important;
     display: block;
     font-style: normal;
     padding: 2px;
+    color:black;
+    overflow-x: auto;
+}
+.uci-change-legend .uci-change-legend-label del {
+    overflow-x: unset;
+    border-radius: 5px;
 }
 
 .uci-change-list var,
@@ -1943,7 +2109,14 @@ width:50px !important;
     display: block;
     font-style: normal;
     padding: 2px;
+    color:black;
+
+    overflow-x: auto;
 }
+.uci-change-legend .uci-change-legend-label var {
+    overflow-x: unset;
+    border-radius: 5px;
+}    
 
 .uci-change-list var ins,
 .uci-change-list var del {
@@ -1951,6 +2124,9 @@ width:50px !important;
     white-space: pre;
     font-style: normal;
     padding: 0px;
+    color:black;
+    /* border-radius: 5px; */
+    overflow-x: auto;
 }
 
 .uci-change-legend {
@@ -1998,7 +2174,7 @@ width:50px !important;
 }
 
 .ifacebox {
-    border: #1096db 1px solid;
+    border: var(--ifaceboxBorderColor) 1px solid;
     border-radius: 5px;
     font-size:0.92rem;
     font-weight:normal;
@@ -2008,6 +2184,7 @@ width:50px !important;
 }
 .ifacebox-body small {
     font-size:0.8rem !important;
+    padding: 5px
 }
 
 .ifacebox-body strong {
@@ -2095,12 +2272,12 @@ header > .container > .pull-right > * {
 }
 
 #xhr_poll_status > .label.success {
-    padding: 10px 10px;
+    padding: 10px 0;
     border-radius: 20px;
 }
 
 #xhr_poll_status_off {
-    padding: 10px 10px;
+    padding: 10px 0;
     border-radius: 20px;
 }
 
@@ -2121,6 +2298,7 @@ header > .container > .pull-right > * {
     padding: 3px 10px;
     border-radius: 20px;
     z-index: 10;
+    top: 22px;
 }
 
 #refresh_on, #refresh_off {
@@ -2311,12 +2489,12 @@ header > .container > .pull-right > * {
 
 .node-system-packages .cbi-section-node .cbi-value-last > div  {
     border: none !important;
+    border-radius: 3px;
 }
-
-
 
 .node-system-packages .cbi-section-node .cbi-value-last > div > div  {
     border: none !important;
+    border-radius: 3px;
 }
 
 .node-system-packages .cbi-section-node .cbi-value-last:nth-last-child(1)  {
@@ -2476,16 +2654,29 @@ header > .container > .pull-right > * {
 }
 
 /** fix node-status-realtime **/
-
 .node-status-realtime table > tbody > tr > td {
     text-align: left !important;
     padding: 10px 3px 10px 3px;
+}
+.node-status-realtime table[id=connections] > tbody > tr > td {
+    padding: 10px 3px 10px 3px;
+    text-align: center !important;
 }
 
 .node-status-realtime table  {
     table-layout: auto !important;
 }
-
+/* fix node-status-realtime connections */
+.node-status-realtime fieldset[id="cbi-table-table"] {
+    background-color: unset !important;
+}
+.node-status-realtime fieldset[id="cbi-table-table"] > table > tbody > tr:nth-of-type(odd),
+.node-status-realtime fieldset[id="cbi-table-table"] table[id="connections"] tr.cbi-section-table-row.cbi-rowstyle-2 {
+    background-color: unset;
+}
+.node-status-realtime fieldset[id="cbi-table-table"] .cbi-section-node {
+    overflow: auto;
+}
 
 select#cbi\.combobox\.cbid\.shadowsocksr\.cfg013fd6\.tunnel_forward {
     overflow: hidden;
@@ -2495,6 +2686,26 @@ select#cbi\.combobox\.cbid\.shadowsocksr\.cfg013fd6\.tunnel_forward {
 /* language fix */
 body.lang_pl.node-main-login .cbi-value-title {
     width: 12rem;
+}
+
+/* fix nlbw component */
+#detail-bubble {
+    /* left: unset !important; */
+    width: unset!important;
+}
+#detail-bubble.in {
+    color: #000;
+    padding-bottom: calc(60px +  env(safe-area-inset-bottom));
+    left: 19rem !important;
+    width: calc(100vw - 21.25rem)!important;
+}
+#detail-bubble .head {
+    display: block;
+    overflow: auto;
+}
+#detail-bubble #bubble-table {
+    display: inline-table;
+    overflow: auto;
 }
 
 @media screen and (max-width: 1280px) {
@@ -2537,23 +2748,46 @@ body.lang_pl.node-main-login .cbi-value-title {
     }
 
     img[src*="/luci-static/resources/cbi/add.gif"] {
-        right: 70px;
+        right: 55px;
         display: block;
         position: absolute;
         margin-top: -34px;
     }
     img[src*="/luci-static/resources/cbi/remove.gif"] {
-        right: 70px;
+        right: 55px;
         display: block;
         position: absolute;
         margin-top: -34px;
     }
 
     img[src*="/luci-static/resources/cbi/reload.gif"] {
-        right: 70px;
+        right: 55px;
         display: block;
         position: absolute;
         margin-top: -34px;
+    }
+    /* fix nlbw component */
+    #detail-bubble {
+        /* left: unset !important; */
+        width: unset!important;
+    }
+    #detail-bubble.in {
+        color: #000;
+        padding-bottom: calc(60px +  env(safe-area-inset-bottom));
+        left: 19rem !important;
+        width: calc(100vw - 21.25rem)!important;
+    }
+    #detail-bubble .head {
+        display: block;
+        overflow: auto;
+    }
+    #detail-bubble #bubble-table {
+        display: inline-table;
+        overflow: auto;
+    }
+    .node-nlbw-usage table {
+        display: block;
+        overflow: auto;
     }
 }
 
@@ -2633,24 +2867,127 @@ body.lang_pl.node-main-login .cbi-value-title {
     }
 
     img[src*="/luci-static/resources/cbi/add.gif"] {
-        right: 70px;
+        right: 45px;
         display: block;
         position: absolute;
         margin-top: -34px;
     }
     img[src*="/luci-static/resources/cbi/remove.gif"] {
-        right: 70px;
+        right: 45px;
         display: block;
         position: absolute;
         margin-top: -34px;
     }
 
     img[src*="/luci-static/resources/cbi/reload.gif"] {
-        right: 70px;
+        right: 45px;
         display: block;
         position: absolute;
         margin-top: -34px;
     }
+    /*  fix nlbw component */
+    #detail-bubble {
+        left: unset !important;
+        width: unset!important;
+    }
+    #detail-bubble.in {
+        color: #000;
+        padding-bottom: calc(60px +  env(safe-area-inset-bottom));
+        left: unset !important;
+        width: calc(100vw)!important;
+    }
+    #detail-bubble .head {
+        display: block;
+        overflow: auto;
+        /* text-align: unset !important; */
+    }
+    #detail-bubble #bubble-table {
+        display: inline-table;
+        overflow: auto;
+    }
+    header {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    #cbi-vssr-servers .cbi-button-add {
+        position: static !important; 
+        width: auto !important; 
+        height: 2rem !important;
+        line-height: 2rem !important;
+        color: #fff; 
+        display: block; 
+        padding: 0 !important;
+        font-size: 0.92rem;
+        border-radius: 10px !important;
+        box-shadow: none ;
+        background-image: none;
+    }
+	#cbi-vssr-servers .cbi-section-table-row {
+		margin:10px 0 !important;
+	}
+    #cbi-vssr-servers .p-in5 {
+        padding-bottom: 10px !important;
+        margin: 0 !important;
+    }
+
+    #cbi-vssr-servers .cbi-page-actions {
+        padding-bottom: 10px !important;
+    }
+
+    #maincontent > .container {
+        margin: 20px 20px;
+    }
+    /*  fix nlbw component */
+    #detail-bubble {
+        left: unset !important;
+        width: unset!important;
+    }
+    #detail-bubble.in {
+        color: #000;
+        padding-bottom: calc(60px +  env(safe-area-inset-bottom));
+        left: unset !important;
+        width: calc(100vw)!important;
+    }
+    #detail-bubble .head {
+        display: block;
+        overflow: auto;
+        /* text-align: unset !important; */
+    }
+    #detail-bubble #bubble-table {
+        display: inline-table;
+        overflow: auto;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    /*  fix nlbw component */
+    #detail-bubble {
+        left: unset !important;
+        width: unset!important;
+    }
+    #detail-bubble.in {
+        color: #000;
+        padding-bottom: calc(60px +  env(safe-area-inset-bottom));
+        left: unset !important;
+        width: calc(100vw)!important;
+    }
+    #detail-bubble .head {
+        display: block;
+        overflow: auto;
+        /* text-align: unset !important; */
+    }
+    #detail-bubble #bubble-table {
+        display: block;
+        overflow: auto;
+    }
+    /* fix node-status-realtime table */
+    .main-right > #maincontent {
+        overflow: auto;
+    }
+
 }
 
 @media screen and (max-width: 370px) {
@@ -2840,41 +3177,114 @@ body.lang_pl.node-main-login .cbi-value-title {
      #cbi-samba-cfg010f89-_tmpl .cbi-value-field{
         width: 95%;        
     }
-}
-
-@media screen and (max-width: 700px) {
-
-    #cbi-vssr-servers .cbi-button-add {
-        position: static !important; 
-        width: auto !important; 
-        height: 2rem !important;
-        line-height: 2rem !important;
-        color: #fff; 
-        display: block; 
-        padding: 0 !important;
-        font-size: 0.92rem;
-        border-radius: 10px !important;
-        box-shadow: none ;
-        background-image: none;
+    /*  fix nlbw component */
+    #detail-bubble {
+        left: unset !important;
+        width: unset!important;
     }
-	#cbi-vssr-servers .cbi-section-table-row {
-		margin:10px 0 !important;
-	}
-    #cbi-vssr-servers .p-in5 {
-        padding-bottom: 10px !important;
-        margin: 0 !important;
+    #detail-bubble.in {
+        color: #000;
+        padding-bottom: calc(60px +  env(safe-area-inset-bottom));
+        left: unset !important;
+        width: calc(100vw)!important;
     }
-
-    #cbi-vssr-servers .cbi-page-actions {
-        padding-bottom: 10px !important;
+    #detail-bubble .head {
+        display: block;
+        overflow: auto;
+        /* text-align: unset !important; */
     }
-
-    #maincontent > .container {
-        margin: 20px 20px;
+    #detail-bubble #bubble-table {
+        display: block;
+        overflow: auto;
     }
 }
+
 
 /* fix http://192.168.2.1/cgi-bin/luci/admin/nlbw/usage */
 #intervalSelect {
     height: 40px !important;
+}
+
+/* fix luci-app-commands */
+.commandbox div {
+    position: unset !important;
+}    
+
+/* fix luci-app-netspeedtest */
+#cbi-netspeedtest-homebox- {
+    display: unset !important;
+}
+
+/* fix node-status-realtime */
+.node-status-realtime .container {
+    overflow:auto
+}
+
+/* fix node-network-network */
+.node-network-network div[onclick*="document.getElementById('cbid.network."] {
+    background-color: unset !important;
+}
+
+/* fix wireless_join list button */
+form[action="/cgi-bin/luci/admin/network/wireless"] input[class="cbi-button cbi-button-reset"] {
+    height: 25px;
+    min-width: 80px;
+}
+    
+form[action="/cgi-bin/luci/admin/network/wireless_join"] input[class="cbi-button cbi-input-find"]  {
+    height: 25px;
+    min-width: 70px;
+}
+
+/* fix node-services-aliyundrive-webdav mask-box background style */
+.node-services-aliyundrive-webdav #mask-box {
+    background: rgb(64 64 64 / 0%);
+}
+
+/* fix node-servces-ddns input style */
+.node-services-ddns #cbi-ddns-service input {
+    width: unset;
+}
+.node-services-ddns .cbi-value input[type="password"],
+.node-services-ddns .cbi-value input[type="text"] {
+    width: 100% !important;
+}
+
+/* fix luci-app-fileassistant botton style */
+.fb-container .cbi-button {
+    border-radius: 8px;
+    margin: 3px 3px 3px 0;
+    height: unset !important;
+}
+
+/* fix luci-app-appfilter table overflow style */
+.node-services-appfilter .cbi-section.cbi-tblsection {
+    overflow: auto;
+}
+
+/* update node-system-commands style */
+.node-system-commands h3 {
+    text-transform: unset;
+}
+.node-system-commands .commandbox {
+    width: auto;
+    display: inline-block;
+    float: none;
+}
+.node-system-commands .commandbox p {
+    word-break:keep-all;
+    white-space:nowrap;
+}
+.node-system-commands div.cbi-map fieldset.cbi-section {
+    align-items: center;
+    text-align: center;
+}
+.node-system-commands #cbi-luci.cbi-map fieldset.cbi-section {
+    align-items: unset;
+    text-align: unset;
+}
+
+.node-network-network .ifacebox strong{
+    color: var(--ifaceboxFontColor);
+    padding: 5px;
 }

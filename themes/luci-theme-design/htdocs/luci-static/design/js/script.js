@@ -18,7 +18,58 @@
  *  Licensed to the public under the Apache License 2.0
  */
 (function ($) {
-    $(".main > .loading").fadeOut();
+
+    // 修复某些插件导致在https下env(safe-area-inset-bottom)为0的情况
+    var url = self.location.href; 
+    if ((/(iPhone|iPad|iPod|iOS|Mac|Macintosh)/i.test(navigator.userAgent)) && url.indexOf("openclash") != -1 ) {
+        var oMeta = document.createElement('meta');
+        oMeta.content = 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover';
+        oMeta.name = 'viewport';
+        document.getElementsByTagName('head')[0].appendChild(oMeta);
+    }
+
+    // .node-status-realtime embed[src="/luci-static/resources/bandwidth.svg"] + div + br + table
+    // .node-status-realtime embed[src="/luci-static/resources/wifirate.svg"] + div + br + table
+    // .node-status-realtime embed[src="/luci-static/resources/wireless.svg"] + div + br + table
+    $(document).ready(function(){
+        ["bandwidth", "wifirate", "wireless"].forEach(function (value) {
+            let target = $(".node-status-realtime embed[src=\"\/luci-static\/resources\/" + value + ".svg\"] + div + br + table");
+            if (target.length != 0) {
+                let div =  document.createElement("div");
+                div.style = "overflow-x: auto;"
+                target.before(div);
+                newTarget = target.clone();
+                target.remove();
+                div.append(newTarget.get(0))
+            }
+        })
+   });
+
+    // Fixed scrollbar styles for browsers on different platforms
+    settingGlobalScroll();
+
+    $(document).ready(function() {
+        settingGlobalScroll();
+    })
+
+    $(window).resize(function () {
+        settingGlobalScroll();
+    });
+
+    function settingGlobalScroll() {
+        let global = $('head #global-scroll')
+        if ((/(phone|pad|pod|iPhone|iPod|ios|iOS|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i.test(navigator.userAgent))) {
+            if (global.length > 0) {
+                global.remove();
+            }
+        } else  if (global.length == 0 ) {
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.id = "global-scroll"
+            style.innerHTML="::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--scrollbarColor); border-radius: 2px;}"
+            $("head").append(style)
+        }
+    }
 
     /**
      * trim text, Remove spaces, wrap
@@ -168,10 +219,11 @@
         } else {
             $(".darkMask").stop(true).fadeIn("fast");
             $(".main-left").stop(true).animate({
-                width: "20rem"
+                width: "17rem"
             }, "fast");
             $(".main-right").css("overflow-y", "hidden");
             $(".showSide").css("display", "none");
+            $("header").css("box-shadow",   "17rem 2px 4px rgb(0 0 0 / 8%)")
             showSide = true;
         }
     });
@@ -186,16 +238,20 @@
             }, "fast");
             $(".main-right").css("overflow-y", "auto");
             $(".showSide").css("display", "");
+            $("header").css("box-shadow",   "0 2px 4px rgb(0 0 0 / 8%)")
         }
     });
 
     $(window).resize(function () {
-        if ($(window).width() > 921) {
+        if ($(window).width() > 992) {
             $(".showSide").css("display", "");
             $(".main-left").css("width", "");
             $(".darkMask").stop(true);
             $(".darkMask").css("display", "none");
             showSide = false;
+            $("header").css("box-shadow",   "17rem 2px 4px rgb(0 0 0 / 8%)")
+        } else {
+            $("header").css("box-shadow",   "0 2px 4px rgb(0 0 0 / 8%)")
         }
     });
 
