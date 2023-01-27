@@ -10,6 +10,7 @@ function index()
 
 	local page = entry({'admin', 'services', 'vssr'}, alias('admin', 'services', 'vssr', 'client'), _('Hello World'), 0) -- 首页
 	page.dependent = true
+	page.acl_depends = { 'luci-app-vssr' }
 
 	entry({'admin', 'services', 'vssr', 'client'}, cbi('vssr/client'), _('SSR Client'), 10).leaf = true -- 基本设置
 	entry({'admin', 'services', 'vssr', 'servers'}, cbi('vssr/servers'), _('Severs Nodes'), 11).leaf = true -- 服务器节点
