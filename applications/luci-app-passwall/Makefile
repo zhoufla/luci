@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-passwall
-PKG_VERSION:=4.57
+PKG_VERSION:=4.58
 PKG_RELEASE:=2
 
 PKG_CONFIG_DEPENDS:= \
@@ -76,7 +76,7 @@ config PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy
 	select PACKAGE_iptables-mod-tproxy
 	select PACKAGE_kmod-ipt-nat
 	depends on PACKAGE_$(PKG_NAME)
-	default y if ! PACKAGE_firewall4
+	default y if !PACKAGE_firewall4
 
 config PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy
 	bool "Nftables Transparent Proxy"
