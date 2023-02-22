@@ -1,4 +1,4 @@
-module("luci.model.cbi.passwall.api.api", package.seeall)
+module("luci.passwall.api", package.seeall)
 fs = require "nixio.fs"
 sys = require "luci.sys"
 uci = require"luci.model.uci".cursor()
@@ -147,6 +147,18 @@ function get_args(arg)
     return var
 end
 
+function get_function_args(arg)
+    local var = nil
+    if arg and #arg > 1 then
+        local param = {}
+        for i = 2, #arg do
+            param[#param + 1] = arg[i]
+        end
+        var = get_args(param)
+    end
+    return var
+end
+
 function strToTable(str)
     if str == nil or type(str) ~= "string" then
         return {}
@@ -156,7 +168,7 @@ function strToTable(str)
 end
 
 function is_normal_node(e)
-    if e and e.type and e.protocol and (e.protocol == "_balancing" or e.protocol == "_shunt") then
+    if e and e.type and e.protocol and (e.protocol == "_balancing" or e.protocol == "_shunt" or e.protocol == "_iface") then
         return false
     end
     return true
@@ -266,7 +278,7 @@ function get_valid_nodes()
     uci:foreach(appname, "nodes", function(e)
         e.id = e[".name"]
         if e.type and e.remarks then
-            if e.protocol and (e.protocol == "_balancing" or e.protocol == "_shunt") then
+            if e.protocol and (e.protocol == "_balancing" or e.protocol == "_shunt" or e.protocol == "_iface") then
                 e["remark"] = "%s：[%s] " % {i18n.translatef(e.type .. e.protocol), e.remarks}
                 e["node_type"] = "special"
                 nodes[#nodes + 1] = e
@@ -303,7 +315,7 @@ end
 function get_full_node_remarks(n)
     local remarks = ""
     if n then
-        if n.protocol and (n.protocol == "_balancing" or n.protocol == "_shunt") then
+        if n.protocol and (n.protocol == "_balancing" or n.protocol == "_shunt" or n.protocol == "_iface") then
             remarks = "%s：[%s] " % {i18n.translatef(n.type .. n.protocol), n.remarks}
         else
             local type2 = n.type
