@@ -18,6 +18,15 @@ DISTRIB_ARCH = nil
 LOG_FILE = "/tmp/log/" .. appname .. ".log"
 CACHE_PATH = "/tmp/etc/" .. appname .. "_tmp"
 
+function log(...)
+	local result = os.date("%Y-%m-%d %H:%M:%S: ") .. table.concat({...}, " ")
+	local f, err = io.open(LOG_FILE, "a")
+	if f and err == nil then
+		f:write(result .. "\n")
+		f:close()
+	end
+end
+
 function exec_call(cmd)
 	local process = io.popen(cmd .. '; echo -e "\n$?"')
 	local lines = {}
@@ -314,7 +323,7 @@ function get_valid_nodes()
 	return nodes
 end
 
-function get_full_node_remarks(n)
+function get_node_remarks(n)
 	local remarks = ""
 	if n then
 		if n.protocol and (n.protocol == "_balancing" or n.protocol == "_shunt" or n.protocol == "_iface") then
@@ -332,7 +341,17 @@ function get_full_node_remarks(n)
 				end
 				type2 = type2 .. " " .. protocol
 			end
-			remarks = "%s：[%s] %s:%s" % {type2, n.remarks, n.address, n.port}
+			remarks = "%s：[%s]" % {type2, n.remarks}
+		end
+	end
+	return remarks
+end
+
+function get_full_node_remarks(n)
+	local remarks = get_node_remarks(n)
+	if #remarks > 0 then
+		if n.address and n.port then
+			remarks = remarks .. " " .. n.address .. ":" .. n.port
 		end
 	end
 	return remarks
@@ -375,7 +394,7 @@ function get_customed_path(e)
 end
 
 function is_finded(e)
-	return luci.sys.exec('type -t -p "/bin/%s" -p "%s" "%s"' % {e, get_customed_path(e), e}) ~= "" and true or false
+	return luci.sys.exec('type -t -p "/bin/%s" -p "/usr/bin/%s" -p "%s" "%s"' % {e, e, get_customed_path(e), e}) ~= "" and true or false
 end
 
 function clone(org)
@@ -528,7 +547,7 @@ local function exec(cmd, args, writer, timeout)
 	end
 end
 
-local function compare_versions(ver1, comp, ver2)
+function compare_versions(ver1, comp, ver2)
 	local table = table
 
 	if not ver1 then ver1 = "" end
@@ -905,6 +924,6 @@ function to_check_self()
 		has_update = true,
 		local_version = local_version,
 		remote_version = remote_version,
-		error = remote_version
+		error = i18n.translatef("The latest version: %s, currently does not support automatic update, if you need to update, please compile or download the ipk and then manually install.", remote_version)
 	}
 end
