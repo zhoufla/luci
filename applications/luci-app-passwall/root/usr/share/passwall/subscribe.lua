@@ -173,46 +173,48 @@ do
 		end)
 	end
 
-	local tcp_node_table = uci:get(appname, "@auto_switch[0]", "tcp_node")
-	if tcp_node_table then
-		local nodes = {}
-		local new_nodes = {}
-		for k,node_id in ipairs(tcp_node_table) do
-			if node_id then
-				local currentNode = uci:get_all(appname, node_id) or nil
-				if currentNode then
-					if currentNode.protocol and (currentNode.protocol == "_balancing" or currentNode.protocol == "_shunt") then
-						currentNode = nil
-					end
-					nodes[#nodes + 1] = {
-						log = true,
-						remarks = "TCP备用节点的列表[" .. k .. "]",
-						currentNode = currentNode,
-						set = function(o, server)
-							for kk, vv in pairs(CONFIG) do
-								if (vv.remarks == "TCP备用节点的列表") then
-									table.insert(vv.new_nodes, server)
+	uci:foreach(appname, "socks", function(o)
+		local id = o[".name"]
+		local node_table = uci:get(appname, id, "autoswitch_backup_node")
+		if node_table then
+			local nodes = {}
+			local new_nodes = {}
+			for k,node_id in ipairs(node_table) do
+				if node_id then
+					local currentNode = uci:get_all(appname, node_id) or nil
+					if currentNode then
+						if currentNode.protocol and (currentNode.protocol == "_balancing" or currentNode.protocol == "_shunt") then
+							currentNode = nil
+						end
+						nodes[#nodes + 1] = {
+							log = true,
+							remarks = "Socks[" .. id .. "]备用节点的列表[" .. k .. "]",
+							currentNode = currentNode,
+							set = function(o, server)
+								for kk, vv in pairs(CONFIG) do
+									if (vv.remarks == id .. "备用节点的列表") then
+										table.insert(vv.new_nodes, server)
+									end
 								end
 							end
-						end
-					}
-				end
-			end
-		end
-		CONFIG[#CONFIG + 1] = {
-			remarks = "TCP备用节点的列表",
-			nodes = nodes,
-			new_nodes = new_nodes,
-			set = function(o)
-				for kk, vv in pairs(CONFIG) do
-					if (vv.remarks == "TCP备用节点的列表") then
-						--log("刷新自动切换的TCP备用节点的列表")
-						uci:set_list(appname, "@auto_switch[0]", "tcp_node", vv.new_nodes)
+						}
 					end
 				end
 			end
-		}
-	end
+			CONFIG[#CONFIG + 1] = {
+				remarks = id .. "备用节点的列表",
+				nodes = nodes,
+				new_nodes = new_nodes,
+				set = function(o)
+					for kk, vv in pairs(CONFIG) do
+						if (vv.remarks == id .. "备用节点的列表") then
+							uci:set_list(appname, id, "autoswitch_backup_node", vv.new_nodes)
+						end
+					end
+				end
+			}
+		end
+	end)
 
 	uci:foreach(appname, "nodes", function(node)
 		if node.protocol and node.protocol == '_shunt' then
@@ -276,8 +278,8 @@ do
 							--log("刷新负载均衡节点列表")
 							uci:foreach(appname, "nodes", function(node2)
 								if node2[".name"] == node[".name"] then
-									local index = node2[".index"]
-									uci:set_list(appname, "@nodes[" .. index .. "]", "balancing_node", vv.new_nodes)
+									local section = uci:section(appname, "nodes", node_id)
+									uci:set_list(appname, section, "balancing_node", vv.new_nodes)
 								end
 							end)
 						end
@@ -1059,7 +1061,7 @@ local function update_node(manual)
 		local remark = v["remark"]
 		local list = v["list"]
 		for _, vv in ipairs(list) do
-			local cfgid = uci:section(appname, "nodes", api.gen_uuid())
+			local cfgid = uci:section(appname, "nodes", api.gen_short_uuid())
 			for kkk, vvv in pairs(vv) do
 				uci:set(appname, cfgid, kkk, vvv)
 			end
