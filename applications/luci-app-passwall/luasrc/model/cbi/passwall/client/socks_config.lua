@@ -1,10 +1,10 @@
 local api = require "luci.passwall.api"
 local appname = api.appname
 local uci = api.uci
-local has_v2ray = api.is_finded("v2ray")
-local has_xray = api.is_finded("xray")
+local has_xray = api.finded_com("xray")
 
 m = Map(appname)
+api.set_apply_on_parse(m)
 
 local nodes_table = {}
 for k, e in ipairs(api.get_valid_nodes()) do
@@ -54,7 +54,7 @@ o.default = n + 1080
 o.datatype = "port"
 o.rmempty = false
 
-if has_v2ray or has_xray then
+if has_xray then
 	o = s:option(Value, "http_port", "HTTP " .. translate("Listen Port") .. " " .. translate("0 is not use"))
 	o.default = 0
 	o.datatype = "port"
@@ -64,18 +64,18 @@ o = s:option(Flag, "enable_autoswitch", translate("Auto Switch"))
 o.default = 0
 o.rmempty = false
 
-o = s:option(Value, "autoswitch_testing_time", translate("How often to test"), translate("Units:minutes"))
-o.datatype = "uinteger"
-o.default = 1
+o = s:option(Value, "autoswitch_testing_time", translate("How often to test"), translate("Units:seconds"))
+o.datatype = "min(10)"
+o.default = 30
 o:depends("enable_autoswitch", true)
 
 o = s:option(Value, "autoswitch_connect_timeout", translate("Timeout seconds"), translate("Units:seconds"))
-o.datatype = "uinteger"
+o.datatype = "min(1)"
 o.default = 3
 o:depends("enable_autoswitch", true)
 
 o = s:option(Value, "autoswitch_retry_num", translate("Timeout retry num"))
-o.datatype = "uinteger"
+o.datatype = "min(1)"
 o.default = 1
 o:depends("enable_autoswitch", true)
 	
